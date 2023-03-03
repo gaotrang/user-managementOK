@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; //chỉ lấy các phần cần thiết
+import TableUserList from "./TableUserList"; // để lấy toàn bô folder TableUserList
+import FormUser from "./FormUser";
 
 const DEFAULT_USER = { name: '', email: '', phone: ''}
 
 const Bai3 = () => {
-  const [users, setUsers] = useState ([])
-  const [userList, setUserList] = useState([])
-  const [formData, setFormData] = useState(DEFAULT_USER)
-
+  // const [users, setUsers] = useState ([])
+  const [userList, setUserList] = useState([]);
+  const [formData, setFormData] = useState(DEFAULT_USER);
+  const [searchUserList, setSearchUserList] = useState([]);
+  const [keyword, setKeyWord] = useState('');
   const onChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -38,37 +41,27 @@ const Bai3 = () => {
     setFormData(DEFAULT_USER)
   }
 
-  const onEdit = (selectedUser) => {
-    setFormData(selectedUser)
+  const onEdit = (item) => {
+    setFormData(item)
   }
+  const onDelete = (item) => {
+    const newUserList = userList.filter((user) =>{
+      return user.id !== item.id
+    })
+    setUserList(newUserList)
+  };
+
+  const onSearch = (e) =>{
+    setKeyWord(e.target.value)
+  }
+
   return (
     <div>
-      <div>
-        <input name = 'name' value={formData.name} placeholder="name" onChange ={onChange}/>
-        <input name = 'email' value={formData.email} placeholder="email"  onChange={onChange} />
-        <input name = 'phone' value={formData.phone} placeholder="phone"  onChange={onChange} />
-        <button onClick = {onClick}>{formData.id ? "Edit" : " Create" }</button>
-      </div>
-      <table>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Phone</th>
-        </tr>
+      <FormUser formData={formData} setFormData={setFormData} onSubmit={onClick}/>
 
-      </table>
-      {userList.map((item) => {
-        return (
-          <tr>
-            <td>Name: {item.name}</td>
-            <td>Email: {item.email}</td>
-            <td>Phone: {item.phone}</td>
-            <button 
-            onClick={(e) => {onEdit(item) }}>Edit</button>
-          </tr>
-        )
-      })
-    }
+      <input value={keyword}  onChange ={onSearch}/>
+
+      <TableUserList userList={searchUserList} onEdit={onEdit} onDelete={onDelete}/>
     </div>
   );
 }
