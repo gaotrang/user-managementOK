@@ -17,7 +17,7 @@ const FormUser = (props) => {
         <input name = 'name' value={props.formData.name} placeholder="name" onChange ={onChange}/>
         <input name = 'email' value={props.formData.email} placeholder="email"  onChange={onChange} />
 
-        <button onClick = {props.onClick}>{props.formData.id ? "Edit" : " Create" }</button>
+        <button onClick = {props.onSubmit}>{props.formData.id ? "Edit" : " Create" }</button>
       </div>
     </div>
   );

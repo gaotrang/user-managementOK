@@ -10,6 +10,20 @@ const Bai3 = () => {
   const [formData, setFormData] = useState(DEFAULT_USER);
   const [searchUserList, setSearchUserList] = useState([]);
   const [keyword, setKeyWord] = useState('');
+
+useEffect(() => {
+  console.log(1)
+  if(keyword !== '') {
+    const newUserList = userList.filter((item) => {
+      return item.name === keyword
+    })
+    setSearchUserList(newUserList)
+  }
+  else {
+    setSearchUserList(userList)
+  }
+}, [keyword, userList])
+
   const onChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -20,6 +34,7 @@ const Bai3 = () => {
     })
   }
   const onClick = () => {
+    debugger
     if(formData.id) {
       const newUserList = userList.map((item) => {
         if(item.id === formData.id) {
