@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"; //chỉ lấy các phần cần thiết
+import { useState, useEffect, useMemo } from "react"; //chỉ lấy các phần cần thiết
 import TableUserList from "./TableUserList"; // để lấy toàn bô folder TableUserList
 import FormUser from "./FormUser";
 
@@ -6,21 +6,32 @@ const DEFAULT_USER = { name: '', email: '', phone: ''}
 
 const Bai3 = () => {
   // const [users, setUsers] = useState ([])
-  const [userList, setUserList] = useState([]);
+  const [userList, setUserList] = useState([{name: 'Nguyen Van A', email: 'a@gmail.com'},{name: 'Nguyen Van B', email: 'b@gmail.com'},{name: 'Nguyen anh C', email: 'c@gmail.com'}]);
   const [formData, setFormData] = useState(DEFAULT_USER);
-  const [searchUserList, setSearchUserList] = useState([]);
+  // const [searchUserList, setSearchUserList] = useState([]);
   const [keyword, setKeyWord] = useState('');
 
-useEffect(() => {
-  console.log(1)
+//   useEffect(() => {
+//   if(keyword !== '') {
+//     const newUserList = userList.filter((item) => {
+//       return item.name.includes(keyword) || item.email.includes(keyword) //.includes de tim 1 cum tu
+//     })
+//     setSearchUserList(newUserList)
+//   }
+//   else {
+//     setSearchUserList(userList)
+//   }
+// }, [keyword, userList])
+
+const searchUserList = useMemo(() => {
   if(keyword !== '') {
     const newUserList = userList.filter((item) => {
-      return item.name === keyword
+      return item.name.includes(keyword) || item.email.includes(keyword) 
     })
-    setSearchUserList(newUserList)
+    return newUserList 
   }
   else {
-    setSearchUserList(userList)
+    return userList 
   }
 }, [keyword, userList])
 
