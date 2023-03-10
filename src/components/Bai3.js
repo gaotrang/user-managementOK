@@ -87,7 +87,7 @@ const searchUserList = useMemo(() => {
 
       <input value={keyword}  onChange ={onSearch}/>
 
-      <TableUserList userList={searchUserList} onEdit={onEdit} onDelete={onDelete}/>
+      <TableUserList dataSource={searchUserList} onEdit={onEdit} onDelete={onDelete}/>
     </div>
   );
 }

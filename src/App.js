@@ -2,8 +2,8 @@
 import 'antd/dist/reset.css';
 import './App.css';
 import { Button } from 'antd'
-import Bai3 from './components/Bai3';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import Bai3 from './components/Exam02';
 
 const { Header, Content, Footer } = Layout;
 const App = () => {
