@@ -1,9 +1,12 @@
 
 import { useState } from "react";
 import { Table, Input, Button, Modal } from "antd";
-const DEFAULT_STUDENT = { name: "", studentId: "", score: "", className: ""}
+import TableStudents from "./TableStudent";
+import ModalFormStudent from "./ModalFormStudent"
+const DEFAULT_STUDENT = { name: "", studentId: "", score: "", className: "" }
 
-const TableStudents = (props) => {
+const Exam02 = (props) => {
+    // const [modal, contextHolder] = Modal.useModal();
     const [formData, setFormData] = useState(DEFAULT_STUDENT)
     const [dataSource, setDataSource] = useState([])
     const [open, setOpen] = useState(false)
@@ -18,10 +21,10 @@ const TableStudents = (props) => {
         setOpen(true)
     }
     const onDelete = (item) => {
-        const newDataSource = dataSource.filter((dataSource) =>{
-            return item.id !== dataSource.id
-          })
-          setDataSource(newDataSource)
+        const newDataSource = dataSource.filter((dataSource) => {
+            return dataSource.id !== item.id
+        })
+        setDataSource(newDataSource)
     }
     const onChange = (e) => {
         const name = e.target.name
@@ -29,7 +32,7 @@ const TableStudents = (props) => {
 
         setFormData({
             ...formData,
-            [name] : value
+            [name]: value
         })
     }
 
@@ -37,25 +40,21 @@ const TableStudents = (props) => {
         setOpen(false)
     }
 
-    const onSubmit = () => {
-        if(formData.id) {
+    const onSubmit = (id, data) => {
+        if (id) {
             const newDataSource = dataSource.map((item) => { // return item.id === formData.id ? item
-                if(item.id === formData.id) {
-                    return formData
-                }
-                return item
+                return item.id === id ? { id: id, ...data } : item;
             })
             setDataSource(newDataSource)
-            
         }
-        else{
+        else {
             setDataSource([
                 ...dataSource,
                 {
                     id: Math.random(),
-                    ...formData
-                }
-                ])
+                    ...data,
+                },
+            ])
 
         }
         setOpen(false)
@@ -67,60 +66,28 @@ const TableStudents = (props) => {
     //     {name: " Trương Văn D ", StudentID: " 147 ", score: " 8 ", className: "2"},
     //     {name: " Huỳnh Văn E ", StudentID: " 258 ", score: " 9 ", className: "1"},
     // ]
-    const columns = [
-        {
-          title: 'Tên học sinh',
-          dataIndex: 'name',
-          key: 'name',
-        },
-        {
-          title: 'Mã số học sinh',
-          dataIndex: 'StudentID',
-          key: 'StudentID',
-        },
-        {
-          title: 'Điểm',
-          dataIndex: 'score',
-          key: 'score',
-        },
-        {
-            title: 'Lớp',
-            dataIndex: 'className',
-            key: 'className',
-          },
-        {
-            title: "",
-            dataIndex: 'actions',
-            render: (text, item) => {
-                return (
-                    <div>
-                        <button onClick={() => { onEdit(item) }}>Edit</button>
-                        <button onClick={()=> { onDelete(item) }}>Delete</button>
-                    </div>
-                )
-            }
-        },
-      ];
-      return (
 
-          <div>
-              <div>
-                  <Modal open={open} onOk={onSubmit} onCancel={onCancel}>
-                  <Input name='name' value={formData.name} onChange={onChange} />
-                  <Input name='studentId' value={formData.studentId} onChange={onChange} />
-                  <Input name='score' value={formData.score} onChange={onChange} />
-                  <Input name='className' value={formData.className} onChange={onChange} />
-                  </Modal>
+    return (
 
-                  <Button onClick={onCreate}>New Student</Button>
-                <Table dataSource={dataSource} columns={columns} />;
-              </div>
+        <div>
+            <div>
+                <ModalFormStudent
+                    open={open}
+                    setOpen={setOpen}
+                    onSubmit={onSubmit}
+                    formData={formData}
+                    onChange={onChange}
+                />
 
-          </div>
-      )
-    
-    };
+                <Button onClick={onCreate}>New Student</Button>
+                <TableStudents dataSource={dataSource} onEdit={onEdit} onDelete={onDelete} />;
+            </div>
 
-    export default TableStudents;
+        </div>
+    )
+
+};
+
+export default Exam02;
 
 
